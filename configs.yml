@@ -1,0 +1,51 @@
+AE: # autoencoder/KitNET (anomaly detection model) parameters
+  percentage: 0.99
+  batch_size: 1024 
+  lr: 1.e-5 
+  weight_decay: 1.e-6 
+  epoches: 10
+  l2_lambda: 0.001
+  flag: 0
+#要求键值对的冒号后面有一个空格
+
+LSTM:
+  window_size: 10
+  num_classes: 1605
+  num_candidates: 9 
+  num_epochs: 20
+  batch_size: 1024
+  num_layers: 2
+  lr: 1.e-3
+  hidden_size: 64
+  test_batch: 20000
+  test_info: False
+
+# Below are hyper-parameters of OWAD
+ShiftDetector:
+  test_numrounds: 1000
+  test_thres: 0.01
+  test_bin_num: 10
+
+ShiftExplainer:
+  lr: 20
+  steps: 50
+  acc_wgt: 5
+  ohd_wgt: 10
+  det_wgt: 1
+  bbin_num: 50
+  thres: 0.5
+
+ShiftAdapter:
+  reg_wgt: 0.1
+  steps: 15
+  batch_size: 1024
+  lr: 1.e-3
+
+
+Eval: # for Evaluation
+  verbose_info: True
+  discrete_thres: 0.5
+  control_num: 50000
+
+  
+  
