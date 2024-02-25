@@ -47,12 +47,8 @@ def TPR_FPR(y_prob, y_true, thres, verbose=True):
 
     if verbose:
         print("*********************** The relevant test indicators are as follows ***********************")
-        print('FPR:', fpr, )
-        print('Precision:',precision)
         print('Recall:',recall)
         print('F1_Score:',f1_score)
-
-    return fpr
 
 def multi_fpr_tpr(y_prob, y_true, thres_max, thres_min=0., split=1000, is_P_mal=True):
     y_true = np.asarray(y_true)
@@ -77,49 +73,6 @@ def multi_fpr_tpr(y_prob, y_true, thres_max, thres_min=0., split=1000, is_P_mal=
         fpr.append(fp / (fp + tn))  # 利用append方法将得到结果进行拼接
         tpr.append(tp / (tp + fn))
 
-    return fpr, tpr  # 最后返回一系列的fpr和tpr
-
-
-# AUC指标
-def multi_metrics(probs,  # 预测的一系列值
-                  labels,  # 本身的一系列值
-                  thres_max=1.,
-                  thres_min=0.,
-                  split=1000,
-                  is_P_mal=True,
-                  condition=None,
-                  # plot_file=None,
-                  plot_file='FRONTEND',
-                  ):
-    fprs, tprs = multi_fpr_tpr(probs, labels, thres_max, thres_min=thres_min, split=split, is_P_mal=is_P_mal)
-    roc_auc = metrics.auc(fprs, tprs)  # 利用sklearn.metrics.auc()得到AUC指标
-    print('AUC:', roc_auc)
-
-    # 画ROC曲线
-    if plot_file:
-        plt.figure()
-        plt.plot(fprs, tprs)
-        plt.title('Receiver Operating Characteristic')
-        plt.xlabel('FPR')
-        plt.ylabel('TPR')
-        plt.text(0.6, 0.2, 'AUC = %0.2f' % roc_auc, fontsize=12)  # 在指定位置添加AUC值
-        if plot_file == 'FRONTEND':
-            # plt.savefig(r'C:\Users\Depth\Desktop\OWAD模型\OWAD模型实验--方案三\images/result_plot_2.png')
-            plt.show()
-        else:
-            plt.savefig(plot_file)
-
-    if condition is not None:
-        fprs, tprs = np.asarray(fprs), np.asarray(tprs)
-        if 'tpr' in condition:
-            print('fpr: %.4f' % np.min(fprs[tprs >= condition['tpr']]), '(@tpr %.4f)' % condition['tpr'])
-        if 'fpr' in condition:
-            print('tpr: %.4f' % np.max(tprs[fprs <= condition['fpr']]), '(@fpr %.4f)' % condition['fpr'])
-
-    # return fprs, tprs
-
-
-# 下面函数的每个设置都是为了保证每次运行网络的时候相同输入的输出是固定的
 def set_random_seed(seed=42, deterministic=True):
     random.seed(seed)  # 为随机数设定随机数种子
     np.random.seed(seed)  # 设置生成的数组的随机数种子
